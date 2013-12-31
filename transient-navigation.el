@@ -25,27 +25,25 @@
 
 ;;; Code:
 
-(defvar transient-navigation-map
-  (let ((map (make-sparse-keymap)))
-    (define-key map (kbd "f") #'transient-forward-char)
-    (define-key map (kbd "b") #'transient-backward-char)
-    (define-key map (kbd "n") #'transient-next-line)
-    (define-key map (kbd "p") #'transient-previous-line)
-    map))
+(defvar transient-navigation-map (make-sparse-keymap))
 
-(defmacro transnav-make-transient (func)
-  "Wrap FUNC with a transient map."
+(defmacro transnav-make-transient (key map func)
+  "Bind KEY in MAP to FUNC with a transient map."
   (let ((funcname (intern (concat "transient-" (symbol-name func)))))
-    `(defun ,funcname (&optional n)
-       (interactive)
-       (ignore n)
-       (call-interactively #',func)
-       (set-transient-map transient-navigation-map t))))
+    `(progn
+       (defun ,funcname (&optional n)
+         (interactive)
+         (ignore n)
+         (call-interactively #',func)
+         (set-transient-map transient-navigation-map t))
+       (define-key ,map (kbd ,key) #',funcname))))
 
-(transnav-make-transient forward-char)
-(transnav-make-transient backward-char)
-(transnav-make-transient next-line)
-(transnav-make-transient previous-line)
+(transnav-make-transient "f" transient-navigation-map forward-char)
+(transnav-make-transient "b" transient-navigation-map backward-char)
+(transnav-make-transient "n" transient-navigation-map next-line)
+(transnav-make-transient "p" transient-navigation-map previous-line)
+(transnav-make-transient "e" transient-navigation-map end-of-line)
+(transnav-make-transient "a" transient-navigation-map beginning-of-line)
 
 ;;;###autoload
 (define-minor-mode transient-navigation-mode
@@ -56,11 +54,15 @@
         (define-key global-map [remap forward-char] #'transient-forward-char)
         (define-key global-map [remap backward-char] #'transient-backward-char)
         (define-key global-map [remap next-line] #'transient-next-line)
-        (define-key global-map [remap previous-line] #'transient-previous-line))
+        (define-key global-map [remap previous-line] #'transient-previous-line)
+        (define-key global-map [remap end-of-line] #'transient-end-of-line)
+        (define-key global-map [remap beginning-of-line] #'transient-beginning-of-line))
     (define-key global-map [remap transient-forward-char] #'forward-char)
     (define-key global-map [remap transient-backward-char] #'backward-char)
     (define-key global-map [remap transient-next-line] #'next-line)
-    (define-key global-map [remap transient-previous-line] #'previous-line)))
+    (define-key global-map [remap transient-previous-line] #'previous-line)
+    (define-key global-map [remap transient-end-of-line] #'end-of-line)
+    (define-key global-map [remap transient-beginning-of-line] #'beginning-of-line)))
 
 (provide 'transient-navigation)
 ;;; transient-navigation.el ends here
