@@ -26,8 +26,8 @@
 ;;; Code:
 
 (defvar transient-navigation-mode-map (make-sparse-keymap))
-(defvar transient-navigation-map (make-sparse-keymap))
-(defvar transient-word-navigation-map (make-sparse-keymap))
+(defvar transient-C-navigation-map (make-sparse-keymap))
+(defvar transient-M-navigation-map (make-sparse-keymap))
 
 (defmacro transnav-make-transient (key map func)
   "Bind KEY in MAP to FUNC with a transient map."
@@ -43,17 +43,17 @@
        (define-key transient-navigation-mode-map
          [remap ,func] #',funcname))))
 
-(transnav-make-transient "f" transient-navigation-map forward-char)
-(transnav-make-transient "b" transient-navigation-map backward-char)
-(transnav-make-transient "n" transient-navigation-map next-line)
-(transnav-make-transient "p" transient-navigation-map previous-line)
-(transnav-make-transient "e" transient-navigation-map end-of-line)
-(transnav-make-transient "a" transient-navigation-map beginning-of-line)
+(transnav-make-transient "f" transient-C-navigation-map forward-char)
+(transnav-make-transient "b" transient-C-navigation-map backward-char)
+(transnav-make-transient "n" transient-C-navigation-map next-line)
+(transnav-make-transient "p" transient-C-navigation-map previous-line)
+(transnav-make-transient "e" transient-C-navigation-map end-of-line)
+(transnav-make-transient "a" transient-C-navigation-map beginning-of-line)
 
-(transnav-make-transient "f" transient-word-navigation-map forward-word)
-(transnav-make-transient "b" transient-word-navigation-map backward-word)
-(transnav-make-transient "e" transient-word-navigation-map forward-sentence)
-(transnav-make-transient "a" transient-word-navigation-map backward-sentence)
+(transnav-make-transient "f" transient-M-navigation-map forward-word)
+(transnav-make-transient "b" transient-M-navigation-map backward-word)
+(transnav-make-transient "e" transient-M-navigation-map forward-sentence)
+(transnav-make-transient "a" transient-M-navigation-map backward-sentence)
 
 ;;;###autoload
 (define-minor-mode transient-navigation-mode
