@@ -60,5 +60,9 @@
   "Remap certain navigation commands to ones with a transient map."
   nil nil transient-navigation-mode-map)
 
+;;;###autoload
+(define-globalized-minor-mode global-transient-navigation-mode
+  transient-navigation-mode transient-navigation-mode)
+
 (provide 'transient-navigation)
 ;;; transient-navigation.el ends here
