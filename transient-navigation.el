@@ -25,9 +25,9 @@
 
 ;;; Code:
 
+(defvar transient-navigation-mode-map (make-sparse-keymap))
 (defvar transient-navigation-map (make-sparse-keymap))
 (defvar transient-word-navigation-map (make-sparse-keymap))
-(defvar transient-function-map (make-hash-table))
 
 (defmacro transnav-make-transient (key map func)
   "Bind KEY in MAP to FUNC with a transient map."
@@ -40,7 +40,8 @@
          (call-interactively #',func)
          (set-transient-map ,map t))
        (define-key ,map (kbd ,key) #',func)
-       (setf (gethash ',func transient-function-map) ',funcname))))
+       (define-key transient-navigation-mode-map
+         [remap ,func] #',funcname))))
 
 (transnav-make-transient "f" transient-navigation-map forward-char)
 (transnav-make-transient "b" transient-navigation-map backward-char)
@@ -57,15 +58,7 @@
 ;;;###autoload
 (define-minor-mode transient-navigation-mode
   "Remap certain navigation commands to ones with a transient map."
-  nil nil nil
-  (if transient-navigation-mode
-      (maphash (lambda (k v)
-                 (define-key global-map (vector 'remap k) v))
-               transient-function-map)
-    (maphash (lambda (k v)
-               (ignore v)
-               (define-key global-map (vector 'remap k) nil))
-             transient-function-map)))
+  nil nil transient-navigation-mode-map)
 
 (provide 'transient-navigation)
 ;;; transient-navigation.el ends here
