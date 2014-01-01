@@ -1,6 +1,6 @@
 ;;; transient-navigation.el --- Navigate with a transient mode  -*- lexical-binding: t; -*-
 
-;; Copyright (C) 2013  Tom Willemse
+;; Copyright (C) 2014  Tom Willemse
 
 ;; Author: Tom Willemse <tom@ryuslash.org>
 ;; Keywords: convenience
