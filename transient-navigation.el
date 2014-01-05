@@ -21,7 +21,24 @@
 
 ;;; Commentary:
 
-;;
+;; Ease navigation by providing a minor mode that enables a transient
+;; key map whenever certain navigation commands are specified.
+
+;; The `transient-navigation-mode' and
+;; `global-transient-navigation-mode' minor modes can be used to
+;; enable this mode either locally or globally.
+
+;; More keybindings can be added to your liking by using the
+;; `transnav-make-transient' macro.  With this macro You can specify
+;; the key to use while the transient keymap is enabled, which map you
+;; would like to have activated and which function you would like it
+;; to replace and put in the transient keymap.
+
+;; Currently the variables `transient-C-navigation-map' and
+;; `transient-M-navigation-map' are provided, which try to extend the
+;; Control and Meta (Alt) prefixed navigation commands.  You can
+;; easily add your own by creating a keymap and passing it as the MAP
+;; parameter to `transnav-make-transient'.
 
 ;;; Code:
 
