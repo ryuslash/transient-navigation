@@ -42,9 +42,15 @@
 
 ;;; Code:
 
-(defvar transient-navigation-mode-map (make-sparse-keymap))
-(defvar transient-C-navigation-map (make-sparse-keymap))
-(defvar transient-M-navigation-map (make-sparse-keymap))
+(defvar transient-navigation-mode-map (make-sparse-keymap)
+  "The keymap that will start all the trouble.
+
+The original keybindings will be remapped to the ones enabling
+the transient keymap.")
+(defvar transient-C-navigation-map (make-sparse-keymap)
+  "The keymap containing control-prefixed keys.")
+(defvar transient-M-navigation-map (make-sparse-keymap)
+  "The keymap containing meta-prefixed keys.")
 
 (defmacro transnav-make-transient (key map func)
   "Bind KEY in MAP to FUNC with a transient map."
