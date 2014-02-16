@@ -42,6 +42,25 @@
 
 ;;; Code:
 
+(defgroup transient-navigation nil
+  "Customization group for the `transient-navigation' package."
+  :group 'convenience)
+
+(defcustom transient-navigation-cursor-color "#0074D9"
+  "Color for the cursor when a transient navigation map is enabled.
+
+A value of nil disables changing the color of the cursor when a
+transient map is enabled."
+  :group 'transient-navigation
+  :type 'color)
+
+(defcustom transient-navigation-cursor-type nil
+  "The type of cursor to use when a transient map is enabled.
+
+A value of nil disables changing the type of the cursor when a
+transient map is enabled."
+  :group 'transient-navigation)
+
 (defvar transient-navigation-mode-map (make-sparse-keymap)
   "The keymap that will start all the trouble.
 
@@ -61,7 +80,18 @@ the transient keymap.")
          (interactive)
          (ignore args)
          (call-interactively #',func)
-         (set-transient-map ,map t))
+         (let ((current-cursor-color (frame-parameter (selected-frame) 'cursor-color))
+               (current-cursor-type cursor-type))
+           (when transient-navigation-cursor-color
+             (set-cursor-color transient-navigation-cursor-color))
+           (when transient-navigation-cursor-type
+             (setq cursor-type transient-navigation-cursor-type))
+           (set-transient-map
+            ,map t (lambda ()
+                     (when transient-navigation-cursor-color
+                       (set-cursor-color current-cursor-color))
+                     (when transient-navigation-cursor-type
+                       (setq cursor-type current-cursor-type))))))
        (define-key ,map (kbd ,key) #',func)
        (define-key transient-navigation-mode-map
          [remap ,func] #',funcname))))
